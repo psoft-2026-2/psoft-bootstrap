@@ -1,7 +1,9 @@
+import java.util.List;
+
 public class Bootstrap {
 
     public static void main(String[] args) {
 
-        System.out.println("Projeto de Software");
+        //List<Pessoa> pessoas = new List<Pessoa>();
     }
 }
