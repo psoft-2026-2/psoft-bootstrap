@@ -56,6 +56,10 @@ public abstract class Pessoa {
 	public void addEndereco(String endereco) {
 		this.enderecos.add(endereco);
 	}
+
+	public boolean removeEndereco(String endereco) {
+		return this.enderecos.remove(endereco);
+	}
 	
 	@Override
 	public int hashCode() {
