@@ -1,52 +1,31 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Bootstrap {
     public static void main(String[] args) {
-        List<Pessoa> pessoas = new ArrayList<Pessoa>();
-        PessoaService pessoaService = new PessoaService(pessoas);
+        Item detergente = new Item("Detergente", "I01", 2.99);
+        Item leite = new Item("Leite", "I02", 5.49);
+        Item frango = new Item("Frango", "I03", 20.99);
 
-        try {
-            System.out.println("=== TESTANDO CREATE ===");
-            pessoaService.createCliente("Davi", LocalDate.of(2002, 5, 27), "11122233344", "4005312367809900");
-            pessoaService.createFuncionario("Maisa", LocalDate.of(2005, 1, 19), "55566677788", "Gerente");
+        Customer c1 = new Customer("João");
 
-            System.out.println("Total de pessoas cadastradas: " + pessoaService.getPessoas().size());
+        Customer c2 = new Customer("Maria");
+        c2.upgradeSubscription();
 
-            System.out.println("\n=== TESTANDO READ ===");
-            Pessoa pessoa1 = pessoaService.getPessoa(0);
-            System.out.println("Pessoa no índice 0: " + pessoa1.getNome());
-            System.out.println("Cartão do Cliente: " + ((Cliente) pessoa1).getCartao());
+        Sale venda1 = new Sale(c1);
+        venda1.addItem(new ItemSale(leite, 4));
+        venda1.addItem(new ItemSale(frango, 1));
+        System.out.println("Total da venda de João: " + venda1.getFinalPrice());
+        System.out.println("Status: " + venda1.getStatus());
+        System.out.println();
 
-            Pessoa pessoa2 = pessoaService.getPessoa(1);
-            System.out
-                    .println("Pessoa no índice 1: " + pessoa2.getNome() + " (Idade: " + pessoa2.getIdade() + " anos)");
-            System.out.println("Cargo: " + ((Funcionario) pessoa2).getCargo());
+        Sale venda2 = new Sale(c2);
+        venda2.addItem(new ItemSale(detergente, 2));
+        venda2.addItem(new ItemSale(frango, 3));
+        System.out.println("Total da venda de Maria: " + venda2.getFinalPrice());
+        System.out.println("Status: " + venda2.getStatus());
+        System.out.println();
 
-            System.out.println("\n=== TESTANDO UPDATE ===");
-            System.out.println("Profissão de " + pessoa1.getNome() + " antes do update: " + pessoa1.getProfissao());
-            System.out.println("Telefone de " + pessoa1.getNome() + " antes do update: "
-                    + pessoa1.getTelefone());
-            System.out.println("Idade de " + pessoa1.getNome() + " antes do update: " + pessoa1.getIdade());
-
-            pessoaService.updateProfissaoPessoa(0, "Desenvolvedor Backend");
-            pessoaService.updateIdadePessoa(0, LocalDate.of(2000, 5, 13));
-            pessoaService.updateTelefonePessoa(0, "83977869033");
-
-            Pessoa pessoaAtualizada = pessoaService.getPessoa(0);
-            System.out.println("Idade após update: " + pessoaAtualizada.getIdade());
-            System.out.println("Profissão após update: " + pessoaAtualizada.getProfissao());
-            System.out.println("Telefone após update: " + pessoaAtualizada.getTelefone());
-
-            System.out.println("\n=== TESTANDO DELETE ===");
-            pessoaService.deletePessoa(1);
-
-            System.out.println("Total de pessoas após delete: " + pessoaService.getPessoas().size());
-            System.out.println("Única pessoa restante na lista: " + pessoaService.getPessoa(0).getNome());
-
-        } catch (Exception e) {
-            System.out.println("Ocorreu um erro durante as operações do CRUD: " + e.getMessage());
-        }
+        venda1.pay();
+        venda2.cancel();
+        System.out.println("Status compra de João: " + venda1.getStatus());
+        System.out.println("Status compra de Maria: " + venda2.getStatus());
     }
 }
