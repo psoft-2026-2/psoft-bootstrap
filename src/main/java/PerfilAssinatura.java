@@ -1,7 +1,3 @@
-/**
- * Perfil de assinatura do cliente.
- * Information Expert: cada perfil conhece o seu próprio percentual de desconto.
- */
 public enum PerfilAssinatura {
 
     STANDARD(0.0),

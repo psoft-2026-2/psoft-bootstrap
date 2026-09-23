@@ -22,10 +22,6 @@ public class ItemVenda {
         return quantidade;
     }
 
-    /**
-     * Information Expert: o item conhece o produto e a quantidade,
-     * então é ele quem calcula o subtotal com o desconto por quantidade.
-     */
     public double getSubtotal() {
         double subtotal = this.produto.getPreco() * this.quantidade;
         if (this.quantidade >= qtdMinDesc) {

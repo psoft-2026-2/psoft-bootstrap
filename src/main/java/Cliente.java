@@ -26,10 +26,6 @@ public class Cliente {
         this.perfil = perfil;
     }
 
-    /**
-     * Information Expert: o cliente conhece o seu perfil de assinatura
-     * e, portanto, sabe qual desconto deve ser aplicado ao valor da compra.
-     */
     public double aplicarDesconto(double valor) {
         return this.perfil.aplicarDesconto(valor);
     }
