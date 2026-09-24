@@ -80,6 +80,11 @@ public class Venda {
     }
 
     public String toString() {
-        return "Venda{cliente=" + cliente + ", itens=" + itens + ", total=" + total() + ", desconto=" + valorDesconto() + ", totalPago=" + totalPago() + ", pagamento=" + pagamento + "}";
+        return "Venda{cliente=" + cliente
+                + ", itens=" + itens
+                + ", total=" + total()
+                + ", desconto=" + valorDesconto()
+                + ", totalPago=" + totalPago()
+                + ", pagamento=" + pagamento + "}";
     }
 }
