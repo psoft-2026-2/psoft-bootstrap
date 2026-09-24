@@ -29,7 +29,6 @@ public class Pagamento {
         this.formaPagamento = formaPagamento;
         float total = this.itens.getSubTotal();
 
-        // Aplicando regra de desconto por quantidade de itens
         if (this.itens.getQuantidade() >= 20) {
             total -= total * 0.10f;
         }
