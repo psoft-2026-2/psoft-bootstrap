@@ -53,18 +53,19 @@ public class Venda {
         return sb.toString();
     }
 
+    
+    public Cliente getCliente() {
+        return cliente;
+    }
+    
+    public Float getValorTotal() {
+        return valorTotal;
+    }
+    
     @Override 
     public String toString() {
         return "Cliente: " + cliente.getNome() +
                "\nItens:\n" + listarItens() +
                "\nValor Total: " + valorTotal;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public Float getValorTotal() {
-        return valorTotal;
     }
 }

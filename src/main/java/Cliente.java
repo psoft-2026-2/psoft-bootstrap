@@ -54,6 +54,7 @@ public class Cliente {
     this.perfil = Perfil.PREMIUM;
   }
 
+  @Override
   public String toString() {
     return "nome: " + nome +
             "\ncpf ='" + cpf +
