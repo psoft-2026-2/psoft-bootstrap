@@ -24,7 +24,6 @@ public class Venda {
             total += item.calculaSubTotal();
         }
 
-        // confirmar se assim é bom mesmo
         return total - total * cliente.getDescontoPerfil();
     }
 
