@@ -1,13 +1,39 @@
-import java.util.*;
+public class Cliente {
+    private String nome;
+    private String cpf;
+    private PerfilCliente perfil;
 
-public class Cliente extends Pessoa{
-
-    public Cliente (String nome, String cpf, String telefone, int idade, String profissao, List<Endereco> enderecos) {
-        super(nome, idade, cpf, telefone, enderecos, profissao);
+    public Cliente(String nome, String cpf, PerfilCliente perfil) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.perfil = perfil;
     }
 
-    @Override
-    public String toString() {
-        return "Cliente: " + getNome() + "\nCPF: " + getCpf() + "\nTelefone: " + getTelefone() + "\nIdade: " + getIdade() + "\nProfissão: " + getProfissao() + "\nEndereços: " + getEnderecos();
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public PerfilCliente getPerfil() {
+        return perfil;
+    }
+
+    public boolean setPerfil(PerfilCliente newPerfil) {
+        if (newPerfil == null) {
+            return false;
+        }
+        this.perfil = newPerfil;
+        return true;
+    }
+
+    public boolean temDesconto() {
+        return perfil.getDesconto() > 0;
+    }
+
+    public int getDesconto() {
+        return perfil.getDesconto();
     }
 }
