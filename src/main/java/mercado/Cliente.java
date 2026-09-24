@@ -27,7 +27,10 @@ public class Cliente {
             this.enderecos.add(endereco);
         }
     }
-
+    
+    public List<Endereco> getEnderecos(){
+        return enderecos;
+    }
     public String getNome() {
         return nome;
     }
