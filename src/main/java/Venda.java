@@ -1,17 +1,17 @@
 import java.util.List;
 
 public class Venda {
-    private List<Produto> itens;
+    private List<itemVenda> itens;
 
-    public int total(){
-        for (Produto item : itens) {
-            
+    public double total(){
+        double total = 0;
+        for (itemVenda item : itens) {
+            total += item.subtotal();
         }
-        return 0;
+        return total;
     }
 
-    public void addItem(Produto produto){
-        this.itens.add(produto);
-        
+    public void addItem(itemVenda item){
+        this.itens.add(item);
     }
 }

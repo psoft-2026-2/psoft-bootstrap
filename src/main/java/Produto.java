@@ -1,7 +1,7 @@
 public class Produto {
-    private int qnt;
-    private final String  nome;
-    private double preço;
+    private int estoque;
+    private final String nome;
+    private final double preço;
 
     public double getPreço() {
         return this.preço;
@@ -11,12 +11,16 @@ public class Produto {
         return this.nome;
     }
 
+    public int getEstoque(){
+        return estoque;
+    }
+
     public void setQnt(int qnt){
-        this.qnt = qnt;
+        this.estoque = qnt;
     }
 
     public Produto(int qnt, String nome, double preço) {
-        this.qnt = qnt;
+        this.estoque = qnt;
         this.nome = nome;
         this.preço = preço;
     }
