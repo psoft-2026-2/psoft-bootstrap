@@ -1,40 +1,30 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Cliente {
 
-public class Cliente extends Pessoa {
+    private int idCliente;
+    private String nome;
+    private AssinaturaCliente perfil;
 
-    private final List<String> cartoes;
-    private String informacoes;
-
-    public Cliente(String nome, String cpf, int idade, String telefone, String profissao) {
-        super(nome, cpf, idade, telefone, profissao);
-        this.cartoes = new ArrayList<>();
+    public Cliente(int idCliente, String nome, AssinaturaCliente perfil) {
+        this.idCliente = idCliente;
+        this.nome = nome;
+        this.perfil = perfil;
     }
 
-    public String getInformacoes() {
-        return informacoes;
+    public double getDesconto() {
+        return perfil.getDesconto();
     }
 
-    public void setObservacoes(String informacoes) {
-       this.informacoes = informacoes;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-     public List<String> getCartoes() {
-        return cartoes;
+    public String getNome() {
+        return nome;
     }
 
-    public void adicionarCartao(String cartao) {
-        this.cartoes.add(cartao);
-    }
-
-    public boolean removerCartao(String cartao) {
-        return this.cartoes.remove(cartao);
-    }
-
-    @Override
-    public String getPapel() {
-        return "Cliente";
+    public AssinaturaCliente getPerfil() {
+        return perfil;
     }
 }
