@@ -1,31 +1,17 @@
 public class Produto {
     private String nome;
-    private String codigo;
-    private float preco;
+    private String descricao;
 
-    public Produto(String nome, String codigo, float preco) {
+    public Produto(String nome, String descricao) {
         this.nome = nome;
-        this.codigo = codigo;
-        this.preco = preco;
+        this.descricao = descricao;
     }
 
     public String getNome() {
-        return this.nome;
+        return nome;
     }
 
-    public void setNome(String newNome) {
-        this.nome = newNome;
-    }
-
-    public String getCodigo() {
-        return this.codigo;
-    }
-
-    public float getPreco() {
-        return this.preco;
-    }
-
-    public void setPreco(float newPreco) {
-        this.preco = newPreco;
+    public String getDescricao() {
+        return descricao;
     }
 }
