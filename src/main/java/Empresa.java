@@ -1,74 +1,46 @@
-import java.util.Hashtable;
 import java.util.List;
 
 public class Empresa {
-   private Funcionario productOwner;
-   private Hashtable<String, Funcionario> funcionarios;
-   private Hashtable<String, Projeto> projetos;
 
-    public Empresa(){
-        this.funcionarios = new Hashtable<>();
-        this.projetos = new Hashtable<>();
+    private String nome;
+    private List<Produto> produtos;
+    private Funcionario owner;
+
+    public Empresa(String nome, List<Produto> produtos, Funcionario owner) {
+        this.nome = nome;
+        this.produtos = produtos;
+        this.owner = owner;
     }
 
-    public void contratar(String nome, String cpf, float salario){
-        funcionarios.put(cpf, new Funcionario(nome, cpf, salario));
-    }
-    
-    public void demitir(String cpf){
-        funcionarios.remove(cpf);
+    public String getNome() {
+        return nome;
     }
 
-    public void elejerProductOwner(String cpf){
-        funcionarios.get(cpf).promoverAPO();
+    public void setNome(String novo) {
+        this.nome = novo;
     }
 
-    public void promover(String cpf){
-        funcionarios.get(cpf).promoverAGerente();
+    public List<Produto> getProdutos() {
+        return produtos;
     }
 
-    public void darAumento(String cpf, float  valor){
-        funcionarios.get(cpf).aumento(valor);
+    public void setProdutos(List<Produto> nova) {
+        this.produtos = nova;
     }
 
-    public void criarProjeto(String idProjeto, String cpf, String descricao){
-        projetos.put(idProjeto, new Projeto(idProjeto, funcionarios.get(cpf), descricao));
+    public void addProduto(Produto p) {
+        produtos.add(p);
     }
 
-    public void addDesenvolvedorEmProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).incluirDesenvolvedor(funcionarios.get(cpf));
+    public void removeProduto(Produto p) {
+        produtos.remove(p);
     }
 
-    public void removerDesenvolvedorDeProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).removerDesenvolvedor(funcionarios.get(cpf));
+    public Funcionario getOwner() {
+        return owner;
     }
 
-    public void excluirProjeto(String idProjeto){
-        projetos.remove(idProjeto);
-    }
-
-    public void sprintsDeProjeto(String idProjeto){
-        List<Sprint> sprints = projetos.get(idProjeto).getSprints();
-        for (Sprint s : sprints) {
-            System.out.println(s.toString());
-        }
-    }
-
-    public void ListarTimeDeProjeto(String idProjeto){
-        System.out.println(projetos.get(idProjeto).getTime().toString()); 
-    }
-
-    public void entregarProjeto(String idProject){
-        projetos.get(idProject).entregarProjeto();
-    }
-
-    public void listarFuncionarios(){
-        for(Funcionario funcionario : funcionarios.values())
-            System.out.print(funcionario.toString());
-    }
-
-    public void listarProjetos(){
-        for(Projeto funcionario : projetos.values())
-            System.out.print(funcionario.toString());
+    public void setOwner(Funcionario novo) {
+        this.owner = novo;
     }
 }

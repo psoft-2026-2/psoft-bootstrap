@@ -1,41 +1,46 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class Time {
+
+    private String nome;
+    private List<Funcionario> equipe;
     private Funcionario gerente;
-    private List<Funcionario> desenvolvedores;
 
-    public Time(Funcionario gerente){
-        if(!gerente.getPapel().equals("Gerente"))
-            throw new IllegalArgumentException("O líder do time deve ter o papel de Gerente.");
+    public Time(String nome, List<Funcionario> equipe, Funcionario gerente) {
+        this.nome = nome;
+        this.equipe = equipe;
         this.gerente = gerente;
-        this.desenvolvedores = new ArrayList<>();
     }
 
-    public void addDesenvolvedor(Funcionario dev){
-        if(!dev.getPapel().equals("Desenvolvedor"))
-            throw new IllegalArgumentException("Apenas desenvolvedores podem entrar nesta lista.");
-        this.desenvolvedores.add(dev);
+    public String getNome() {
+        return nome;
     }
 
-    public void removerDesenvolvedor(Funcionario dev){
-        desenvolvedores.remove(dev);
+    public void setNome(String novo) {
+        this.nome = novo;
     }
 
-    public Funcionario getGerente(){
-        return this.gerente;
+    public List<Funcionario> getEquipe() {
+        return equipe;
     }
 
-    public List<Funcionario> getDesenvolvedores(){
-        return this.desenvolvedores;
+    public void setEquipe(List<Funcionario> nova) {
+        this.equipe = nova;
     }
 
-    @Override 
-    public String toString(){
-        String toString = gerente.toString() + "\n"; 
-        for(Funcionario dev : desenvolvedores)
-            toString += dev.toString() + "\n";
-        return toString;
+    public void addEquipe(Funcionario novo) {
+        equipe.add(novo);
     }
-        
+
+    public void removeEquipe(Funcionario funcionario) {
+        equipe.remove(funcionario);
+    }
+
+    public Funcionario getGerente() {
+        return gerente;
+    }
+
+    public void setGerente(Funcionario novo) {
+        this.gerente = novo;
+    }
 }

@@ -1,23 +1,48 @@
+import java.util.Date;
+
 public class Sprint {
+
+    private String nome;
+    private Date data;
+    private Produto produto;
     private Funcionario lider;
-    private String descricao;
 
-    public Sprint(Funcionario funcionario, String descricao){
-        this.lider = funcionario;
-        this.descricao = descricao;
+    public Sprint(String nome, Date data, Produto produto, Funcionario lider) {
+        this.nome = nome;
+        this.data = data;
+        this.produto = produto;
+        this.lider = lider;
     }
 
-    public String getDescricao(){
-        return this.descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public Funcionario getLider(){
-        return this.lider;
+    public void setNome(String novo) {
+        this.nome = novo;
     }
 
-    @Override 
-    public String toString(){
-        return "Líder: " + this.lider.getNome() + "\n" +
-                "Descrição: " + this.descricao; 
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date nova) {
+        this.data = nova;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto novo) {
+        this.produto = novo;
+    }
+
+    public Funcionario getLider() {
+        return lider;
+    }
+
+    public void setLider(Funcionario novo) {
+        this.lider = novo;
     }
 }

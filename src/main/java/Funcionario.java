@@ -1,43 +1,40 @@
 public class Funcionario {
-    private String nome;
-    private Cargo cargo;
-    private String cpf;
-    private float salario;
 
-    public Funcionario(String nome, String cpf, float salario){
+    private String nome;
+    private String cpf;
+    private Papel papel;
+
+    public Funcionario(String nome, String cpf, Papel papel) {
         this.nome = nome;
         this.cpf = cpf;
-        this.cargo = new Desenvolvedor();
-        this.salario = salario;
+        this.papel = papel;
     }
 
-    public void promoverAGerente(){
-        if(!cargo.getDescricao().equals("Desenvolvedor"))
-            throw new IllegalArgumentException("O funcionário já é gerente ou product owner");
-        else this.cargo = new Gerente();
+    public String getNome() {
+        return nome;
     }
 
-    public void aumento(float valor){
-        this.salario +=  valor;
+    public void setNome(String novo) {
+        this.nome = novo;
     }
 
-    public String getPapel() {
-        return this.cargo.getDescricao();
+    public String getCpf() {
+        return cpf;
     }
 
-    public String getNome(){
-        return this.nome;
+    public void setCpf(String novo) {
+        this.cpf = novo;
     }
 
-    @Override
-    public String toString() {
-        return this.nome + " - " + this.cargo;
+    public Papel getPapel() {
+        return papel;
     }
 
-    public void promoverAPO() {
-       if (this.cargo.getDescricao().equals("Desenvolvedor"))
-         throw new IllegalArgumentException("O funcionário precisa ser gerente para ser promovido a Product Owner.");
-       else 
-        this.cargo = new Gerente();
+    public void promoverPapel() {
+        if (papel instanceof PapelDesenvolvedor) {
+            papel = new PapelGerente();
+        } else if (papel instanceof PapelGerente) {
+            papel = new PapelProductOwner();
+        }
     }
 }
