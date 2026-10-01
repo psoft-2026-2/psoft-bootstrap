@@ -1,43 +1,88 @@
-public class Funcionario {
-    private String nome;
-    private Cargo cargo;
-    private String cpf;
-    private float salario;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
-    public Funcionario(String nome, String cpf, float salario){
+public class Funcionario {
+
+    private String nome;
+    private String cpf;
+    private List<Funcao> cargos;
+
+    public Funcionario(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
-        this.cargo = new Desenvolvedor();
-        this.salario = salario;
+        this.cargos = new ArrayList<>();
     }
 
-    public void promoverAGerente(){
-        if(!cargo.getDescricao().equals("Desenvolvedor"))
-            throw new IllegalArgumentException("O funcionário já é gerente ou product owner");
-        else this.cargo = new Gerente();
+    public void adicionarCargo(Funcao funcao) {
+
+        if (funcao == null) {
+            throw new IllegalArgumentException(
+                    "A função não pode ser nula."
+            );
+        }
+
+        if (!temCargo(funcao)) {
+            cargos.add(funcao);
+        }
     }
 
-    public void aumento(float valor){
-        this.salario +=  valor;
+    public void removerCargo(Funcao funcao) {
+
+        if (funcao == null) {
+            return;
+        }
+
+        cargos.removeIf(
+                cargo -> cargo.getClass().equals(funcao.getClass())
+        );
     }
 
-    public String getPapel() {
-        return this.cargo.getDescricao();
+    public boolean temCargo(Funcao funcao) {
+
+        if (funcao == null) {
+            return false;
+        }
+
+        return cargos.stream()
+                .anyMatch(
+                        cargo ->
+                                cargo.getClass()
+                                     .equals(funcao.getClass())
+                );
     }
 
-    public String getNome(){
-        return this.nome;
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public List<Funcao> getCargos() {
+        return Collections.unmodifiableList(cargos);
     }
 
     @Override
-    public String toString() {
-        return this.nome + " - " + this.cargo;
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Funcionario)) {
+            return false;
+        }
+
+        Funcionario outro = (Funcionario) obj;
+
+        return cpf.equals(outro.cpf);
     }
 
-    public void promoverAPO() {
-       if (this.cargo.getDescricao().equals("Desenvolvedor"))
-         throw new IllegalArgumentException("O funcionário precisa ser gerente para ser promovido a Product Owner.");
-       else 
-        this.cargo = new Gerente();
+    @Override
+    public int hashCode() {
+        return Objects.hash(cpf);
     }
 }

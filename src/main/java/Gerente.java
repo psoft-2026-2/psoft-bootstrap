@@ -1,8 +1,7 @@
-public class Gerente implements Cargo{
-   String DESCRICAO = "Gerente";
+public class Gerente implements Funcao {
 
     @Override
-    public String getDescricao() {
-        return DESCRICAO;
+    public String getFuncao() {
+        return "GERENTE";
     }
 }
