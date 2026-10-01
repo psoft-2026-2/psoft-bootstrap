@@ -1,0 +1,3 @@
+public enum Papel { 
+    DESENVOLVEDOR, LIDER, GERENTE, PRODUCT_OWNER
+}
