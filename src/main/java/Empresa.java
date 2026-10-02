@@ -2,73 +2,297 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class Empresa {
-   private Funcionario productOwner;
-   private Hashtable<String, Funcionario> funcionarios;
-   private Hashtable<String, Projeto> projetos;
 
-    public Empresa(){
+    private Funcionario productOwner;
+
+    private final Hashtable<String, Funcionario> funcionarios;
+
+    private final Hashtable<String, Projeto> projetos;
+
+    public Empresa() {
+
         this.funcionarios = new Hashtable<>();
         this.projetos = new Hashtable<>();
     }
 
-    public void contratar(String nome, String cpf, float salario){
-        funcionarios.put(cpf, new Funcionario(nome, cpf, salario));
+
+    public void contratar(
+            String nome,
+            String cpf,
+            float salario
+    ) {
+
+        if (funcionarios.containsKey(cpf)) {
+            throw new IllegalArgumentException(
+                    "Já existe um funcionário com o CPF informado."
+            );
+        }
+
+        funcionarios.put(
+                cpf,
+                new Funcionario(nome, cpf, salario)
+        );
     }
-    
-    public void demitir(String cpf){
+
+    public void demitir(String cpf) {
+
+        Funcionario funcionario =
+                obterFuncionario(cpf);
+
+        if (funcionario.equals(productOwner)) {
+            productOwner = null;
+        }
+
         funcionarios.remove(cpf);
     }
 
-    public void elejerProductOwner(String cpf){
-        funcionarios.get(cpf).promoverAPO();
+
+    public void elejerProductOwner(String cpf) {
+
+        if (productOwner != null) {
+            throw new IllegalArgumentException(
+                    "A empresa já possui um Product Owner."
+            );
+        }
+
+        Funcionario funcionario =
+                obterFuncionario(cpf);
+
+        funcionario.promoverAPO();
+
+        productOwner = funcionario;
     }
 
-    public void promover(String cpf){
-        funcionarios.get(cpf).promoverAGerente();
+    public void elegerProductOwner(String cpf) {
+        elejerProductOwner(cpf);
     }
 
-    public void darAumento(String cpf, float  valor){
-        funcionarios.get(cpf).aumento(valor);
+
+    public void promover(String cpf) {
+
+        Funcionario funcionario =
+                obterFuncionario(cpf);
+
+        funcionario.promoverAGerente();
     }
 
-    public void criarProjeto(String idProjeto, String cpf, String descricao){
-        projetos.put(idProjeto, new Projeto(idProjeto, funcionarios.get(cpf), descricao));
+    public void darAumento(
+            String cpf,
+            float valor
+    ) {
+
+        obterFuncionario(cpf)
+                .aumento(valor);
     }
 
-    public void addDesenvolvedorEmProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).incluirDesenvolvedor(funcionarios.get(cpf));
+
+    public void criarProjeto(
+            String idProjeto,
+            String cpf,
+            String descricao
+    ) {
+
+        if (projetos.containsKey(idProjeto)) {
+            throw new IllegalArgumentException(
+                    "Já existe um projeto com o ID informado."
+            );
+        }
+
+        Funcionario gerente =
+                obterFuncionario(cpf);
+
+        if (!gerente.ehGerente()) {
+            throw new IllegalArgumentException(
+                    "Somente um funcionário com cargo de Gerente pode criar um projeto."
+            );
+        }
+
+        projetos.put(
+                idProjeto,
+                new Projeto(
+                        idProjeto,
+                        gerente,
+                        descricao
+                )
+        );
     }
 
-    public void removerDesenvolvedorDeProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).removerDesenvolvedor(funcionarios.get(cpf));
+
+    public void addDesenvolvedorEmProjeto(
+            String cpf,
+            String idProjeto
+    ) {
+
+        Projeto projeto =
+                obterProjeto(idProjeto);
+
+        Funcionario funcionario =
+                obterFuncionario(cpf);
+
+        projeto.incluirDesenvolvedor(funcionario);
     }
 
-    public void excluirProjeto(String idProjeto){
-        projetos.remove(idProjeto);
+
+    public void removerDesenvolvedorDeProjeto(
+            String cpf,
+            String idProjeto
+    ) {
+
+        Projeto projeto =
+                obterProjeto(idProjeto);
+
+        Funcionario funcionario =
+                obterFuncionario(cpf);
+
+        projeto.removerDesenvolvedor(funcionario);
     }
 
-    public void sprintsDeProjeto(String idProjeto){
-        List<Sprint> sprints = projetos.get(idProjeto).getSprints();
-        for (Sprint s : sprints) {
-            System.out.println(s.toString());
+
+    public void criarSprint(
+            String cpf,
+            String idProjeto,
+            String descricao
+    ) {
+
+        Projeto projeto =
+                obterProjeto(idProjeto);
+
+        Funcionario funcionario =
+                obterFuncionario(cpf);
+
+        projeto.criarSprint(
+                funcionario,
+                descricao
+        );
+    }
+
+
+    public void excluirProjeto(
+            String idProjeto
+    ) {
+
+        if (projetos.remove(idProjeto) == null) {
+
+            throw new IllegalArgumentException(
+                    "Projeto não encontrado: " + idProjeto
+            );
         }
     }
 
-    public void ListarTimeDeProjeto(String idProjeto){
-        System.out.println(projetos.get(idProjeto).getTime().toString()); 
+
+    public void sprintsDeProjeto(
+            String idProjeto
+    ) {
+
+        List<Sprint> sprints =
+                obterProjeto(idProjeto)
+                        .getSprints();
+
+        for (Sprint s : sprints) {
+            System.out.println(s);
+            System.out.println();
+        }
     }
 
-    public void entregarProjeto(String idProject){
-        projetos.get(idProject).entregarProjeto();
+
+    public void ListarTimeDeProjeto(
+            String idProjeto
+    ) {
+
+        System.out.println(
+                obterProjeto(idProjeto)
+                        .getTime()
+        );
     }
 
-    public void listarFuncionarios(){
-        for(Funcionario funcionario : funcionarios.values())
-            System.out.print(funcionario.toString());
+
+    public void listarTimeDeProjeto(
+            String idProjeto
+    ) {
+
+        ListarTimeDeProjeto(idProjeto);
     }
 
-    public void listarProjetos(){
-        for(Projeto funcionario : projetos.values())
-            System.out.print(funcionario.toString());
+
+    public void entregarProjeto(
+            String idProjeto
+    ) {
+
+        obterProjeto(idProjeto)
+                .entregarProjeto();
+    }
+
+  
+    public void listarFuncionarios() {
+
+        for (Funcionario funcionario :
+                funcionarios.values()) {
+
+            System.out.println(funcionario);
+        }
+    }
+
+
+    public void listarProjetos() {
+
+        for (Projeto projeto :
+                projetos.values()) {
+
+            System.out.println(projeto);
+            System.out.println();
+        }
+    }
+
+
+    public Funcionario getFuncionario(
+            String cpf
+    ) {
+
+        return obterFuncionario(cpf);
+    }
+
+
+    public Funcionario getProductOwner() {
+        return productOwner;
+    }
+
+
+    public Projeto getProjeto(
+            String idProjeto
+    ) {
+
+        return obterProjeto(idProjeto);
+    }
+
+
+    private Funcionario obterFuncionario(
+            String cpf
+    ) {
+
+        if (cpf == null ||
+                !funcionarios.containsKey(cpf)) {
+
+            throw new IllegalArgumentException(
+                    "Funcionário não encontrado: " + cpf
+            );
+        }
+
+        return funcionarios.get(cpf);
+    }
+
+
+    private Projeto obterProjeto(
+            String idProjeto
+    ) {
+
+        if (idProjeto == null ||
+                !projetos.containsKey(idProjeto)) {
+
+            throw new IllegalArgumentException(
+                    "Projeto não encontrado: " + idProjeto
+            );
+        }
+
+        return projetos.get(idProjeto);
     }
 }
