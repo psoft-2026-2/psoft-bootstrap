@@ -1,74 +1,51 @@
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Empresa {
-   private Funcionario productOwner;
-   private Hashtable<String, Funcionario> funcionarios;
-   private Hashtable<String, Projeto> projetos;
+    private String nome;
+    private Pessoa productOwner;
+    private List<Time> times;
 
-    public Empresa(){
-        this.funcionarios = new Hashtable<>();
-        this.projetos = new Hashtable<>();
-    }
-
-    public void contratar(String nome, String cpf, float salario){
-        funcionarios.put(cpf, new Funcionario(nome, cpf, salario));
-    }
-    
-    public void demitir(String cpf){
-        funcionarios.remove(cpf);
-    }
-
-    public void elejerProductOwner(String cpf){
-        funcionarios.get(cpf).promoverAPO();
-    }
-
-    public void promover(String cpf){
-        funcionarios.get(cpf).promoverAGerente();
-    }
-
-    public void darAumento(String cpf, float  valor){
-        funcionarios.get(cpf).aumento(valor);
-    }
-
-    public void criarProjeto(String idProjeto, String cpf, String descricao){
-        projetos.put(idProjeto, new Projeto(idProjeto, funcionarios.get(cpf), descricao));
-    }
-
-    public void addDesenvolvedorEmProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).incluirDesenvolvedor(funcionarios.get(cpf));
-    }
-
-    public void removerDesenvolvedorDeProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).removerDesenvolvedor(funcionarios.get(cpf));
-    }
-
-    public void excluirProjeto(String idProjeto){
-        projetos.remove(idProjeto);
-    }
-
-    public void sprintsDeProjeto(String idProjeto){
-        List<Sprint> sprints = projetos.get(idProjeto).getSprints();
-        for (Sprint s : sprints) {
-            System.out.println(s.toString());
+    public Empresa(String nome, Pessoa po) {
+        if (!po.possuiPapel("ProductOwner")) {
+            throw new IllegalArgumentException("O Product Owner deve ter o papel ProductOwner.");
         }
+        this.nome = nome;
+        this.productOwner = po;
+        this.times = new ArrayList<>();
     }
 
-    public void ListarTimeDeProjeto(String idProjeto){
-        System.out.println(projetos.get(idProjeto).getTime().toString()); 
+    public String getNome() {
+        return nome;
     }
 
-    public void entregarProjeto(String idProject){
-        projetos.get(idProject).entregarProjeto();
+    public Pessoa getProductOwner() {
+        return productOwner;
     }
 
-    public void listarFuncionarios(){
-        for(Funcionario funcionario : funcionarios.values())
-            System.out.print(funcionario.toString());
+    public boolean adicionarTime(String id, String nome, Produto prod, Pessoa gerente) {
+        if (contemTime(id) || !gerente.possuiPapel("Gerente")) {
+            return false;
+        }
+        times.add(new Time(id, nome, prod, gerente));
+        return true;
     }
 
-    public void listarProjetos(){
-        for(Projeto funcionario : projetos.values())
-            System.out.print(funcionario.toString());
+    public Time getTime(String id) {
+        for (Time t : times) {
+            if (t.getId().equals(id)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public List<Time> getTimes() {
+        return new ArrayList<>(times);
+    }
+
+    // Método auxiliar privado para substituir a verificação de chave do Map
+    private boolean contemTime(String id) {
+        return getTime(id) != null;
     }
 }

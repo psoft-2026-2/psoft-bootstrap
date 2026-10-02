@@ -2,40 +2,79 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Time {
-    private Funcionario gerente;
-    private List<Funcionario> desenvolvedores;
+  
+    private String id;
+    private String nome;
+    private Produto produto;
+    private Pessoa gerente;
+    private List<Pessoa> equipe;
+    private List<Sprint> sprints;
 
-    public Time(Funcionario gerente){
-        if(!gerente.getPapel().equals("Gerente"))
-            throw new IllegalArgumentException("O líder do time deve ter o papel de Gerente.");
+    public Time(String id, String nome, Produto prod, Pessoa gerente) {
+        if (!gerente.possuiPapel("Gerente")) {
+            throw new IllegalArgumentException("O gerente do time deve ter o papel Gerente.");
+        }
+        this.id = id;
+        this.nome = nome;
+        this.produto = prod;
         this.gerente = gerente;
-        this.desenvolvedores = new ArrayList<>();
+        this.equipe = new ArrayList<>();
+        this.equipe.add(gerente); // Adiciona o gerente à equipe
+        this.sprints = new ArrayList<>();
     }
 
-    public void addDesenvolvedor(Funcionario dev){
-        if(!dev.getPapel().equals("Desenvolvedor"))
-            throw new IllegalArgumentException("Apenas desenvolvedores podem entrar nesta lista.");
-        this.desenvolvedores.add(dev);
+    public String getId() {
+        return id;
     }
 
-    public void removerDesenvolvedor(Funcionario dev){
-        desenvolvedores.remove(dev);
+    public String getNome() {
+        return nome;
     }
 
-    public Funcionario getGerente(){
-        return this.gerente;
+    public Pessoa getGerente() {
+        return gerente;
     }
 
-    public List<Funcionario> getDesenvolvedores(){
-        return this.desenvolvedores;
+    public List<Pessoa> getEquipe() {
+        return new ArrayList<>(equipe); // Retorna uma cópia defensiva
     }
 
-    @Override 
-    public String toString(){
-        String toString = gerente.toString() + "\n"; 
-        for(Funcionario dev : desenvolvedores)
-            toString += dev.toString() + "\n";
-        return toString;
+    public List<Sprint> getSprints() {
+        return new ArrayList<>(sprints);
     }
-        
+
+    public boolean adicionarPessoa(Pessoa p) {
+        if (p == null || !p.possuiPapel("Desenvolvedor") || contemPessoa(p.getId())) {
+            return false;
+        }
+        equipe.add(p);
+        return true;
+    }
+
+    public boolean iniciarSprint(int num, Pessoa lider) {
+        if (lider == null || !contemPessoa(lider.getId())) {
+            return false;
+        }
+        if (!lider.possuiPapel("Desenvolvedor")) {
+            return false;
+        }
+        if (!sprints.isEmpty()) {
+            Sprint anterior = sprints.get(sprints.size() - 1);
+            if (!anterior.isEncerrada() || anterior.getLider().equals(lider)) {
+                return false;
+            }
+        }
+        sprints.add(new Sprint(num, lider));
+        return true;
+    }
+
+    // Método auxiliar privado para busca de pessoas pelo ID
+    private boolean contemPessoa(String id) {
+        for (Pessoa p : equipe) {
+            if (p.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

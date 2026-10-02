@@ -1,23 +1,38 @@
 public class Sprint {
-    private Funcionario lider;
-    private String descricao;
+  
+    private int numero;
+    private Pessoa lider;
+    private boolean encerrada;
 
-    public Sprint(Funcionario funcionario, String descricao){
-        this.lider = funcionario;
-        this.descricao = descricao;
+    public Sprint(int num, Pessoa lider) {
+        this.numero = num;
+        this.lider = lider;
+        this.encerrada = false;
+
+        // Adiciona o papel de líder apenas se a pessoa for um desenvolvedor válido
+        if (lider != null && lider.possuiPapel("Desenvolvedor")) {
+            lider.adicionarPapel(new Líder());
+        }
     }
 
-    public String getDescricao(){
-        return this.descricao;
+    public int getNumero() {
+        return numero;
     }
 
-    public Funcionario getLider(){
-        return this.lider;
+    public Pessoa getLider() {
+        return lider;
     }
 
-    @Override 
-    public String toString(){
-        return "Líder: " + this.lider.getNome() + "\n" +
-                "Descrição: " + this.descricao; 
+    public boolean isEncerrada() {
+        return encerrada;
+    }
+
+    public void encerrar() {
+        if (!encerrada) {
+            if (lider != null && lider.possuiPapel("Líder")) {
+                lider.removerPapel(new Líder());
+            }
+            encerrada = true;
+        }
     }
 }
