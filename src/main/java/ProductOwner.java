@@ -16,11 +16,7 @@ public class ProductOwner implements Cargo {
         return produtos;
     }
 
-    public void setProdutos(List<Software> produtos) {
-        this.produtos = produtos;
-    }
-
-    public void adicionaProduto(Software produto) {
+    public void alocaProduto(Software produto) {
         produtos.add(produto);
     }
 

@@ -27,6 +27,13 @@ public class Membro {
         return id;
     }
 
+    public Cargo promocao() {
+        cargo = cargo.promocao();
+        return cargo;
+    }
+
+    // Eu esqueci de especificar essas partes, mas seriam o modo como essa
+    // classe iria interagir com as capacidades do Cargo
     public Cargo getCargo() {
         return cargo;
     }
@@ -35,8 +42,4 @@ public class Membro {
         cargo.executaFuncao();
     }
 
-    public Cargo promocao() {
-        cargo = cargo.promocao();
-        return cargo;
-    }
 }

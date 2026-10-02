@@ -2,13 +2,13 @@ import java.util.Date;
 
 public class Sprint {
     private final int id;
-    private Date data;
+    private Date date;
     private int teamId;
     private int softwareId;
 
-    public Sprint(int id, Date data, int teamId, int softwareId) {
+    public Sprint(int id, Date date, int teamId, int softwareId) {
         this.id = id;
-        this.data = data;
+        this.date = date;
         this.teamId = teamId;
         this.softwareId = softwareId;
     }
@@ -17,8 +17,8 @@ public class Sprint {
         return id;
     }
 
-    public Date getData() {
-        return data;
+    public Date getDate() {
+        return date;
     }
 
     public int getTeamId() {
