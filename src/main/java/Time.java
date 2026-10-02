@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Time {
-    
+  
     private String id;
     private String nome;
     private Produto produto;
