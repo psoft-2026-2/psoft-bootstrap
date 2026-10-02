@@ -1,23 +1,21 @@
 public class Sprint {
+    private int numero;
     private Funcionario lider;
-    private String descricao;
 
-    public Sprint(Funcionario funcionario, String descricao){
-        this.lider = funcionario;
-        this.descricao = descricao;
+    public Sprint(int numero, Funcionario lider) {
+        if (lider.getPapel() != Papel.DESENVOLVEDOR) {
+            throw new IllegalArgumentException("O lider deve ser um desenvolvedor.");
+        }
+        this.numero = numero;
+        this.lider = lider;
+        this.lider.setEhLider(true);
     }
 
-    public String getDescricao(){
-        return this.descricao;
+    public int getNumero() {
+        return this.numero;
     }
 
-    public Funcionario getLider(){
+    public Funcionario getLider() {
         return this.lider;
-    }
-
-    @Override 
-    public String toString(){
-        return "Líder: " + this.lider.getNome() + "\n" +
-                "Descrição: " + this.descricao; 
     }
 }

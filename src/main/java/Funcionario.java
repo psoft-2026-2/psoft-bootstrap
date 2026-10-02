@@ -1,43 +1,63 @@
 public class Funcionario {
+    private String id;
     private String nome;
-    private Cargo cargo;
-    private String cpf;
-    private float salario;
+    private Papel papel;
+    private boolean ehLider;
 
-    public Funcionario(String nome, String cpf, float salario){
+    public Funcionario(String id, String nome, Papel papel)
+    {
+        this.id = id;
         this.nome = nome;
-        this.cpf = cpf;
-        this.cargo = new Desenvolvedor();
-        this.salario = salario;
+        this.papel = papel;
+        this.ehLider = false;
     }
 
-    public void promoverAGerente(){
-        if(!cargo.getDescricao().equals("Desenvolvedor"))
-            throw new IllegalArgumentException("O funcionário já é gerente ou product owner");
-        else this.cargo = new Gerente();
+    public String getId()
+    {
+        return this.id;
     }
 
-    public void aumento(float valor){
-        this.salario +=  valor;
-    }
-
-    public String getPapel() {
-        return this.cargo.getDescricao();
-    }
-
-    public String getNome(){
+    public String getNome()
+    {
         return this.nome;
     }
 
-    @Override
-    public String toString() {
-        return this.nome + " - " + this.cargo;
+    public Papel getPapel()
+    {
+        return this.papel;
     }
 
-    public void promoverAPO() {
-       if (this.cargo.getDescricao().equals("Desenvolvedor"))
-         throw new IllegalArgumentException("O funcionário precisa ser gerente para ser promovido a Product Owner.");
-       else 
-        this.cargo = new Gerente();
+    public boolean isEhLider()
+    {
+        return this.ehLider;
+    }
+
+    public void setEhLider(boolean ehLider)
+    {
+        if (ehLider && this.papel != Papel.DESENVOLVEDOR)
+        {
+            throw new IllegalStateException("Apenas desenvolvedores podem liderar a sprint.");
+        }
+        this.ehLider = ehLider;
+    }
+
+    public void promoverParaGerente()
+    {
+        if (this.papel != Papel.DESENVOLVEDOR)
+        {
+            throw new IllegalStateException("Apenas desenvolvedores podem ser promovidos a gerente.");
+        }
+        this.papel = Papel.GERENTE;
+        this.ehLider = false;
+    }
+
+    public void promoverParaProductOwner()
+    {
+        if (this.papel != Papel.GERENTE)
+        {
+            throw new IllegalStateException("Apenas gerentes podem ser promovidos a Product Owner.");
+        }
+        this.papel = Papel.PRODUCT_OWNER;
+        this.ehLider = false;
     }
 }
