@@ -1,25 +1,28 @@
-public class Produto {
-    private String nome;
-    private int preco; // em centavos
+package atv2;
 
-    public Produto(String nome, int preco) {
+public class Produto {
+    private String id;
+    private String nome;
+
+    public Produto(String id, String nome) {
+        this.id = id;
         this.nome = nome;
-        this.preco = preco;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public int getPreco() {
-        return preco;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public boolean setPreco(int newPrice) {
-        if (newPrice < 0) {
-            return false;
-        }
-        this.preco = newPrice;
-        return true;
+    @Override
+    public String toString() {
+        return nome;
     }
 }
