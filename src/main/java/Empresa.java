@@ -7,37 +7,82 @@ public class Empresa {
     private List<Produto> produtos;
 
     public Empresa() {
-    }
-
-    public Empresa(Pessoa productOwner) {
-        this.productOwner = productOwner;
         this.pessoas = new ArrayList<>();
         this.times = new ArrayList<>();
         this.produtos = new ArrayList<>();
     }
 
-    public void cadastrarPessoa(Pessoa pessoa) {
-        pessoas.add(pessoa);
+    public Empresa(String nomeProductOwner) {
+        this.productOwner = new Pessoa(nomeProductOwner, "productOwner");
+        this.pessoas = new ArrayList<>();
+        this.times = new ArrayList<>();
+        this.produtos = new ArrayList<>();
+
+        this.pessoas.add(this.productOwner);
     }
 
-    public boolean removePessoa(Pessoa pessoa){
-        return pessoas.remove(pessoa);
+    public void cadastrarPessoa(String nome, String cargo) {
+        pessoas.add(new Pessoa(nome, cargo));
     }
 
-    public void cadastrarTime(Time time) {
-        times.add(time);
+    public boolean removerPessoa(String nome) {
+        for (Pessoa p : pessoas) {
+            if (p.getNome().equals(nome)) {
+                return pessoas.remove(p);
+            }
+        }
+        return false;
     }
 
-    public boolean removerTime(Time time) {
-        return times.remove(time);
+    public void cadastrarProduto(String nome, int id) {
+        produtos.add(new Produto(nome, id));
     }
 
-    public void cadastrarProduto(Produto produto) {
-        produtos.add(produto);
+    public boolean removerProduto(int id) {
+        for (Produto p : produtos) {
+            if (p.getId() == id) {
+                return produtos.remove(p);
+            }
+        }
+        return false;
     }
 
-    public boolean removeProduto(Produto Produto){
-        return produtos.remove(Produto);
+    public void cadastrarTime(String nomeGerente) {
+        times.add(new Time(nomeGerente));
+    }
+
+    public boolean removerTime(int indice) {
+        if (indice >= 0 && indice < times.size()) {
+            times.remove(indice);
+            return true;
+        }
+        return false;
+    }
+
+    public Pessoa buscarPessoa(String nome) {
+        for (Pessoa p : pessoas) {
+            if (p.getNome().equals(nome)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public boolean promoverPessoa(String nome, String novoCargo) {
+        Pessoa pessoa = buscarPessoa(nome);
+        if (pessoa == null) {
+            return false;
+        }
+        pessoa.setCargo(novoCargo);
+        if (novoCargo.equals("productOwner")){
+            this.productOwner = pessoa;
+        }
+
+        return true;
+    }
+
+    public void alterarProductOwner(String nome) {
+        promoverPessoa(nome, "productOwner");
     }
 
     public List<Pessoa> getPessoas() {
@@ -48,25 +93,11 @@ public class Empresa {
         return times;
     }
 
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
     public Pessoa getProductOwner() {
         return productOwner;
-    }
-
-    public void alterarProductOwner(Pessoa productOwner) {
-        this.productOwner = productOwner;
-    }
-    
-    public boolean promoverCargo(Pessoa pessoa, Cargo novoCargo) {
-        if (!pessoas.contains(pessoa) && pessoa != productOwner) {
-            return false;
-        }
-
-        pessoa.setCargo(novoCargo);
-
-        if (novoCargo instanceof ProductOwner) {
-            this.productOwner = pessoa;
-        }
-
-        return true;
     }
 }

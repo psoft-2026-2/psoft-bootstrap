@@ -5,9 +5,9 @@ public class Pessoa {
     public Pessoa() {
     }
 
-    public Pessoa(String nome, Cargo cargo) {
+    public Pessoa(String nome, String cargo) {
         this.nome = nome;
-        this.cargo = cargo;
+        setCargo(cargo);
     }
 
     public String getNome() {
@@ -18,7 +18,21 @@ public class Pessoa {
         return cargo;
     }
 
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
+    public String getFuncao() {
+        return cargo.getFuncao();
+    }
+
+    public void setCargo(String cargo) {
+        switch (cargo) {
+            case "gerente":
+                this.cargo = new Gerente();
+                break;
+            case "productOwner":
+                this.cargo = new ProductOwner();
+                break;
+            default:
+                this.cargo = new Dev();
+                break;
+        }
     }
 }

@@ -6,7 +6,7 @@ public class Sprint {
 
     public Sprint() {
     }
-    
+
     public Sprint(Pessoa lider, String dataInicio, String dataFim, String titulo) {
         this.lider = lider;
         this.dataInicio = dataInicio;
@@ -16,6 +16,10 @@ public class Sprint {
 
     public void setDataFim(String dataFim) {
         this.dataFim = dataFim;
+    }
+
+    public void setLider(Pessoa lider) {
+        this.lider = lider;
     }
 
     public String getDatas() {
