@@ -1,8 +1,6 @@
-public class Desenvolvedor implements Cargo{
-    String DESCRICAO = "Desenvolvedor";
-
+public class Desenvolvedor implements Funcao {
     @Override
-    public String getDescricao() {
-        return DESCRICAO;
+    public String getFuncao() {
+        return "Desenvolvedor";
     }
 }

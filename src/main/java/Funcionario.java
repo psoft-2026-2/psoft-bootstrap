@@ -1,43 +1,69 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Funcionario {
+    private static int proximoId = 1;
+
     private String nome;
-    private Cargo cargo;
-    private String cpf;
-    private float salario;
+    private int id;
+    private List<Funcao> funcoes;
 
-    public Funcionario(String nome, String cpf, float salario){
+    public Funcionario(String nome) {
         this.nome = nome;
-        this.cpf = cpf;
-        this.cargo = new Desenvolvedor();
-        this.salario = salario;
+        this.id = proximoId++;
+        this.funcoes = new ArrayList<>();
     }
 
-    public void promoverAGerente(){
-        if(!cargo.getDescricao().equals("Desenvolvedor"))
-            throw new IllegalArgumentException("O funcionário já é gerente ou product owner");
-        else this.cargo = new Gerente();
+    public boolean addFuncao(Funcao f) {
+        for (Funcao funcao : funcoes) {
+            if (funcao.getClass().equals(f.getClass())) {
+                return false;
+            }
+        }
+
+        funcoes.add(f);
+        return true;
     }
 
-    public void aumento(float valor){
-        this.salario +=  valor;
+    public boolean removeFuncao(Funcao f) {
+        return funcoes.removeIf(funcao -> funcao.getClass().equals(f.getClass()));
     }
 
-    public String getPapel() {
-        return this.cargo.getDescricao();
+    public boolean promove() {
+        if (possuiFuncao(Gerente.class)) {
+            funcoes.clear();
+            funcoes.add(new ProductOwner());
+            return true;
+        }
+
+        if (possuiFuncao(Desenvolvedor.class)) {
+            funcoes.clear();
+            funcoes.add(new Gerente());
+            return true;
+        }
+
+        return false;
     }
 
-    public String getNome(){
-        return this.nome;
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public String toString() {
-        return this.nome + " - " + this.cargo;
+    public String getNome() {
+        return nome;
     }
 
-    public void promoverAPO() {
-       if (this.cargo.getDescricao().equals("Desenvolvedor"))
-         throw new IllegalArgumentException("O funcionário precisa ser gerente para ser promovido a Product Owner.");
-       else 
-        this.cargo = new Gerente();
+    public List<Funcao> getFuncoes() {
+        return funcoes;
+    }
+
+    public boolean possuiFuncao(Class<? extends Funcao> tipo) {
+        for (Funcao funcao : funcoes) {
+            if (tipo.isInstance(funcao)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

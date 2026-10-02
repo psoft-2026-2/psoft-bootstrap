@@ -1,8 +1,6 @@
-public class ProductOwner implements Cargo {
-   String DESCRICAO = "Product Owner";
-
+public class ProductOwner implements Funcao {
     @Override
-    public String getDescricao() {
-        return DESCRICAO;
+    public String getFuncao() {
+        return "ProductOwner";
     }
 }

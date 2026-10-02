@@ -1,23 +1,35 @@
 public class Sprint {
+    private int numero;
     private Funcionario lider;
-    private String descricao;
+    private boolean encerrada;
 
-    public Sprint(Funcionario funcionario, String descricao){
-        this.lider = funcionario;
-        this.descricao = descricao;
+    public Sprint(int num, Funcionario lider) {
+        this.numero = num;
+        this.lider = lider;
+        this.encerrada = false;
+
+        lider.addFuncao(new Lider());
     }
 
-    public String getDescricao(){
-        return this.descricao;
+    public boolean encerrar() {
+        if (encerrada) {
+            return false;
+        }
+
+        lider.removeFuncao(new Lider());
+        encerrada = true;
+        return true;
     }
 
-    public Funcionario getLider(){
-        return this.lider;
+    public int getNumero() {
+        return numero;
     }
 
-    @Override 
-    public String toString(){
-        return "Líder: " + this.lider.getNome() + "\n" +
-                "Descrição: " + this.descricao; 
+    public Funcionario getLider() {
+        return lider;
+    }
+
+    public boolean isEncerrada() {
+        return encerrada;
     }
 }
