@@ -1,0 +1,22 @@
+package model;
+
+import java.util.List;
+
+public class LiderSprint implements SelecaoLider {
+    private int indice;
+
+    public LiderSprint() {
+        this.indice = 0;
+    }
+
+    @Override
+    public Funcionario proximo(Time t) {
+        List<Funcionario> devs = t.getDesenvolvedores();
+        if (devs.isEmpty()) {
+            throw new IllegalStateException("O time não possui desenvolvedores.");
+        }
+        Funcionario lider = devs.get(indice % devs.size());
+        indice = (indice + 1) % devs.size();
+        return lider;
+    }
+}
