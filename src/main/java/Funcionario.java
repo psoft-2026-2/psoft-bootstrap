@@ -1,43 +1,27 @@
+import java.util.ArrayList;
+import java.util.List;
+//Classe Desenvolvedor do diagrama, mudei o nome pra não repetir na classe que implementa a interface de papel
 public class Funcionario {
     private String nome;
-    private Cargo cargo;
-    private String cpf;
-    private float salario;
+    private Integer id;
+    private List<Papel> papeis;
 
-    public Funcionario(String nome, String cpf, float salario){
+    public Funcionario(String nome) {
         this.nome = nome;
-        this.cpf = cpf;
-        this.cargo = new Desenvolvedor();
-        this.salario = salario;
+        this.papeis = new ArrayList<>();
     }
 
-    public void promoverAGerente(){
-        if(!cargo.getDescricao().equals("Desenvolvedor"))
-            throw new IllegalArgumentException("O funcionário já é gerente ou product owner");
-        else this.cargo = new Gerente();
+    public void addPapel(Papel papel) {
+        this.papeis.add(papel);
     }
 
-    public void aumento(float valor){
-        this.salario +=  valor;
+    public void removePapel(Papel papel) {
+        this.papeis.remove(papel);
     }
 
-    public String getPapel() {
-        return this.cargo.getDescricao();
-    }
-
-    public String getNome(){
-        return this.nome;
-    }
-
-    @Override
-    public String toString() {
-        return this.nome + " - " + this.cargo;
-    }
-
-    public void promoverAPO() {
-       if (this.cargo.getDescricao().equals("Desenvolvedor"))
-         throw new IllegalArgumentException("O funcionário precisa ser gerente para ser promovido a Product Owner.");
-       else 
-        this.cargo = new Gerente();
+    public void Trabalhar() {
+        for (Papel papel : papeis) {
+            papel.Trabalhar();
+        }
     }
 }

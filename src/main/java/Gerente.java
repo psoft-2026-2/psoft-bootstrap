@@ -1,8 +1,8 @@
-public class Gerente implements Cargo{
-   String DESCRICAO = "Gerente";
-
+public class Gerente implements Papel {
     @Override
-    public String getDescricao() {
-        return DESCRICAO;
+    public void Trabalhar() {
+    }
+
+    public void Gerenciar() {
     }
 }

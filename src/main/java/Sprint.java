@@ -1,23 +1,26 @@
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 public class Sprint {
+    private Date dtIni;
+    private Date dtFim;
     private Funcionario lider;
-    private String descricao;
 
-    public Sprint(Funcionario funcionario, String descricao){
-        this.lider = funcionario;
-        this.descricao = descricao;
+    public Sprint(Date dtIni) {
+        this.dtIni = dtIni;
     }
 
-    public String getDescricao(){
-        return this.descricao;
+    public List<Date> getDatas() {
+        return Arrays.asList(dtIni, dtFim);
     }
 
-    public Funcionario getLider(){
-        return this.lider;
+    public Funcionario getLider() {
+        return lider;
     }
 
-    @Override 
-    public String toString(){
-        return "Líder: " + this.lider.getNome() + "\n" +
-                "Descrição: " + this.descricao; 
+    public void setLider(Funcionario lider) {
+        this.lider = lider;
     }
 }
+

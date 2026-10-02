@@ -1,74 +1,49 @@
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Empresa {
-   private Funcionario productOwner;
-   private Hashtable<String, Funcionario> funcionarios;
-   private Hashtable<String, Projeto> projetos;
+    private String nome;
+    private List<Time> times;
+    private Funcionario po;
 
-    public Empresa(){
-        this.funcionarios = new Hashtable<>();
-        this.projetos = new Hashtable<>();
+    public Empresa(String nome) {
+        this.nome = nome;
+        this.times = new ArrayList<>();
     }
 
-    public void contratar(String nome, String cpf, float salario){
-        funcionarios.put(cpf, new Funcionario(nome, cpf, salario));
-    }
-    
-    public void demitir(String cpf){
-        funcionarios.remove(cpf);
+    public String getNome() {
+        return nome;
     }
 
-    public void elejerProductOwner(String cpf){
-        funcionarios.get(cpf).promoverAPO();
+    public void setNome(String newNome) {
+        this.nome = newNome;
     }
 
-    public void promover(String cpf){
-        funcionarios.get(cpf).promoverAGerente();
+    public void addTime(Time time) {
+        this.times.add(time);
     }
 
-    public void darAumento(String cpf, float  valor){
-        funcionarios.get(cpf).aumento(valor);
+    public Time getTime(String nome) {
+        for (Time time : times) {
+            if (time.getNome().equals(nome)) {
+                return time;
+            }
+        }
+        return null;
     }
 
-    public void criarProjeto(String idProjeto, String cpf, String descricao){
-        projetos.put(idProjeto, new Projeto(idProjeto, funcionarios.get(cpf), descricao));
+    public Funcionario getPo() {
+        return po;
     }
 
-    public void addDesenvolvedorEmProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).incluirDesenvolvedor(funcionarios.get(cpf));
-    }
-
-    public void removerDesenvolvedorDeProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).removerDesenvolvedor(funcionarios.get(cpf));
-    }
-
-    public void excluirProjeto(String idProjeto){
-        projetos.remove(idProjeto);
-    }
-
-    public void sprintsDeProjeto(String idProjeto){
-        List<Sprint> sprints = projetos.get(idProjeto).getSprints();
-        for (Sprint s : sprints) {
-            System.out.println(s.toString());
+    public void promoverAPo(Funcionario func) {
+        this.po = func;
+        if (func != null) {
+            func.addPapel(new ProductOwner());
         }
     }
 
-    public void ListarTimeDeProjeto(String idProjeto){
-        System.out.println(projetos.get(idProjeto).getTime().toString()); 
-    }
-
-    public void entregarProjeto(String idProject){
-        projetos.get(idProject).entregarProjeto();
-    }
-
-    public void listarFuncionarios(){
-        for(Funcionario funcionario : funcionarios.values())
-            System.out.print(funcionario.toString());
-    }
-
-    public void listarProjetos(){
-        for(Projeto funcionario : projetos.values())
-            System.out.print(funcionario.toString());
+    public void removeTime(String nome) {
+        this.times.removeIf(time -> time.getNome().equals(nome));
     }
 }
