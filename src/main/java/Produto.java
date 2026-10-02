@@ -1,15 +1,25 @@
-public class Produto {
-    private int id;
+public final class Produto {
     private String nome;
-    private double preco;
+    private String descricao;
 
-    public Produto(int id, String nome, double preco) {
-        this.id = id;
+    public Produto(String nome, String descricao) {
         this.nome = nome;
-        this.preco = preco;
+        this.descricao = descricao;
     }
 
-    public double getPreco() {
-        return preco;
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }
