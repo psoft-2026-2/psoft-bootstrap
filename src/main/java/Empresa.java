@@ -1,74 +1,255 @@
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class Empresa {
-   private Funcionario productOwner;
-   private Hashtable<String, Funcionario> funcionarios;
-   private Hashtable<String, Projeto> projetos;
 
-    public Empresa(){
-        this.funcionarios = new Hashtable<>();
-        this.projetos = new Hashtable<>();
+    private Map<String, Funcionario> funcionarios;
+    private List<ProdutoSoftware> produtosSoftware;
+    private List<Time> times;
+    private Funcionario productOwner;
+
+    public Empresa() {
+        this.funcionarios = new HashMap<>();
+        this.produtosSoftware = new ArrayList<>();
+        this.times = new ArrayList<>();
+        this.productOwner = null;
     }
 
-    public void contratar(String nome, String cpf, float salario){
-        funcionarios.put(cpf, new Funcionario(nome, cpf, salario));
-    }
-    
-    public void demitir(String cpf){
-        funcionarios.remove(cpf);
+    public void cadastrarFuncionario(String nome, String cpf) {
+        Funcionario funcionario = new Funcionario(nome, cpf);
+
+        funcionarios.put(cpf, funcionario);
     }
 
-    public void elejerProductOwner(String cpf){
-        funcionarios.get(cpf).promoverAPO();
+    public void cadastrarProduto(String nome,String descricao) {
+
+        ProdutoSoftware produto = new ProdutoSoftware(nome, descricao);
+
+        produtosSoftware.add(produto);
     }
 
-    public void promover(String cpf){
-        funcionarios.get(cpf).promoverAGerente();
+    public void cadastrarTime(String nome, String cpfGerente, int idProduto) {
+        Funcionario gerente =
+                buscarFuncionario(cpfGerente);
+
+        ProdutoSoftware produto =
+                buscarProduto(idProduto);
+
+        if (!gerente.temCargo(new Gerente())) {
+            throw new IllegalArgumentException(
+                    "O funcionário informado não possui o cargo de gerente."
+            );
+        }
+
+        Time time =
+                new Time(
+                        nome,
+                        produto,
+                        gerente
+                );
+
+        times.add(time);
     }
 
-    public void darAumento(String cpf, float  valor){
-        funcionarios.get(cpf).aumento(valor);
+    public void setProductOwner(String cpf) {
+
+        Funcionario funcionario =
+                buscarFuncionario(cpf);
+
+        if (!funcionario.temCargo(new Gerente())) {
+            throw new IllegalArgumentException(
+                    "Somente um gerente pode ser promovido a Product Owner."
+            );
+        }
+
+        for (Time time : times) {
+
+            if (time.getGerente().equals(funcionario)) {
+                throw new IllegalStateException(
+                        "Defina outro gerente para o time antes de promover este gerente a Product Owner."
+                );
+            }
+        }
+
+        if (productOwner != null
+                && !productOwner.equals(funcionario)) {
+
+            productOwner.removerCargo(
+                    new ProductOwner()
+            );
+        }
+
+        funcionario.removerCargo(
+                new Gerente()
+        );
+
+        funcionario.adicionarCargo(
+                new ProductOwner()
+        );
+
+        this.productOwner = funcionario;
     }
 
-    public void criarProjeto(String idProjeto, String cpf, String descricao){
-        projetos.put(idProjeto, new Projeto(idProjeto, funcionarios.get(cpf), descricao));
+    public void adicionarCargoFuncionario(
+            String cpf,
+            String funcao) {
+
+        Funcionario funcionario =
+                buscarFuncionario(cpf);
+
+        Funcao cargo =
+                criarFuncao(funcao);
+
+        funcionario.adicionarCargo(cargo);
     }
 
-    public void addDesenvolvedorEmProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).incluirDesenvolvedor(funcionarios.get(cpf));
+    public void comecarSprint(
+            String nomeTime,
+            String cpfLider) {
+
+        Time time =
+                buscarTimeObrigatorio(nomeTime);
+
+        Funcionario lider =
+                buscarFuncionario(cpfLider);
+
+        time.iniciarSprint(lider);
     }
 
-    public void removerDesenvolvedorDeProjeto(String cpf, String idProjeto){
-        projetos.get(idProjeto).removerDesenvolvedor(funcionarios.get(cpf));
+    public void adicionarDesenvolvedorTime(
+            String nomeTime,
+            String cpf) {
+
+        Time time =
+                buscarTimeObrigatorio(nomeTime);
+
+        Funcionario funcionario =
+                buscarFuncionario(cpf);
+
+        time.adicionarDesenvolvedor(
+                funcionario
+        );
     }
 
-    public void excluirProjeto(String idProjeto){
-        projetos.remove(idProjeto);
+    public void setGerenteTime(
+            String nomeTime,
+            String cpf) {
+
+        Time time =
+                buscarTimeObrigatorio(nomeTime);
+
+        Funcionario funcionario =
+                buscarFuncionario(cpf);
+
+        time.setGerente(funcionario);
     }
 
-    public void sprintsDeProjeto(String idProjeto){
-        List<Sprint> sprints = projetos.get(idProjeto).getSprints();
-        for (Sprint s : sprints) {
-            System.out.println(s.toString());
+    private Funcionario buscarFuncionario(
+            String cpf) {
+
+        Funcionario funcionario =
+                funcionarios.get(cpf);
+
+        if (funcionario == null) {
+            throw new IllegalArgumentException(
+                    "Funcionário não encontrado."
+            );
+        }
+
+        return funcionario;
+    }
+
+    private ProdutoSoftware buscarProduto(
+            int id) {
+
+        for (ProdutoSoftware produto :
+                produtosSoftware) {
+
+            if (produto.getId() == id) {
+                return produto;
+            }
+        }
+
+        throw new IllegalArgumentException(
+                "Produto não encontrado."
+        );
+    }
+
+    private Time buscarTime(String nome) {
+
+        for (Time time : times) {
+
+            if (time.getNome()
+                    .equalsIgnoreCase(nome)) {
+
+                return time;
+            }
+        }
+
+        return null;
+    }
+
+    private Time buscarTimeObrigatorio(
+            String nome) {
+
+        Time time = buscarTime(nome);
+
+        if (time == null) {
+            throw new IllegalArgumentException(
+                    "Time não encontrado."
+            );
+        }
+
+        return time;
+    }
+
+    private Funcao criarFuncao(
+            String funcao) {
+
+        String nome =
+                funcao
+                        .trim()
+                        .toUpperCase(Locale.ROOT)
+                        .replace(" ", "")
+                        .replace("_", "");
+
+        switch (nome) {
+
+            case "DESENVOLVEDOR":
+                return new Desenvolvedor();
+
+            case "LIDER":
+                return new Lider();
+
+            case "GERENTE":
+                return new Gerente();
+
+            case "PRODUCTOWNER":
+                return new ProductOwner();
+
+            default:
+                throw new IllegalArgumentException(
+                        "Função inválida: " + funcao
+                );
         }
     }
 
-    public void ListarTimeDeProjeto(String idProjeto){
-        System.out.println(projetos.get(idProjeto).getTime().toString()); 
+    public Funcionario getProductOwner() {
+        return productOwner;
     }
 
-    public void entregarProjeto(String idProject){
-        projetos.get(idProject).entregarProjeto();
+    public Map<String, Funcionario> getFuncionarios() {
+        return funcionarios;
     }
 
-    public void listarFuncionarios(){
-        for(Funcionario funcionario : funcionarios.values())
-            System.out.print(funcionario.toString());
+    public List<ProdutoSoftware> getProdutosSoftware() {
+        return produtosSoftware;
     }
 
-    public void listarProjetos(){
-        for(Projeto funcionario : projetos.values())
-            System.out.print(funcionario.toString());
+    public List<Time> getTimes() {
+        return times;
     }
 }

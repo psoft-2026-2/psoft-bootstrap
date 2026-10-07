@@ -1,23 +1,43 @@
+import java.time.LocalDateTime;
+
 public class Sprint {
+
+    private static int proximoNumero = 1;
+
     private Funcionario lider;
-    private String descricao;
+    private LocalDateTime dataInicio;
+    private int numero;
 
-    public Sprint(Funcionario funcionario, String descricao){
-        this.lider = funcionario;
-        this.descricao = descricao;
+    public Sprint(Funcionario lider) {
+
+        if (lider == null) {
+            throw new IllegalArgumentException(
+                    "A Sprint deve possuir um líder."
+            );
+        }
+
+        if (!lider.temCargo(new Desenvolvedor())) {
+            throw new IllegalArgumentException(
+                    "O líder da Sprint deve ser um desenvolvedor."
+            );
+        }
+
+        lider.adicionarCargo(new Lider());
+
+        this.lider = lider;
+        this.dataInicio = LocalDateTime.now();
+        this.numero = proximoNumero++;
     }
 
-    public String getDescricao(){
-        return this.descricao;
+    public Funcionario getLider() {
+        return lider;
     }
 
-    public Funcionario getLider(){
-        return this.lider;
+    public LocalDateTime getDataInicio() {
+        return dataInicio;
     }
 
-    @Override 
-    public String toString(){
-        return "Líder: " + this.lider.getNome() + "\n" +
-                "Descrição: " + this.descricao; 
+    public int getNumero() {
+        return numero;
     }
 }
