@@ -5,7 +5,7 @@ public class Pedido {
     private String destino;
     private float distanciaEst;
     private float custo;
-    private Entrega entrega;
+    private Entrega entrega = new EntregaConvencional();
     private boolean despachado;
     private String nomePedido;
 
@@ -21,7 +21,7 @@ public class Pedido {
     }
 
     public boolean despachar() {
-        if (entrega == null || despachado) {
+        if (despachado) {
             return false;
         }
         despachado = true;
