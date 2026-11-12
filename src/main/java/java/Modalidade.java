@@ -1,6 +1,7 @@
 package java;
 
 public interface Modalidade {
+    double calcularCusto(Pedido pedido);
 
-    public boolean realizaEntrega();
+    int calcularPrazo(Pedido pedido);
 }

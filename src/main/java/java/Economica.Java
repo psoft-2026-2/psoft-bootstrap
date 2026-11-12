@@ -1,11 +1,25 @@
 package java;
 
-public class Economica implements Modalidade {
+public class EntregaModalidade {
+    private Modalidade modalidade;
 
-    @Override
-    public boolean realizaEntrega() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'realizaEntrega'");
+    public EntregaModalidade(Modalidade modalidade) {
+        setModalidade(modalidade);
     }
-    
+
+    public void setModalidade(Modalidade modalidade) {
+        if (modalidade == null) {
+            throw new IllegalArgumentException("A modalidade nao pode ser nula.");
+        }
+        this.modalidade = modalidade;
+    }
+
+    public double calcularCusto(Pedido pedido) {
+        return modalidade.calcularCusto(pedido);
+    }
+
+    public int calcularPrazo(Pedido pedido) {
+        return modalidade.calcularPrazo(pedido);
+    }
 }
+
