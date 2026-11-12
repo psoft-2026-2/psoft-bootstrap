@@ -1,0 +1,6 @@
+/**
+ * ModalidadeEconomica
+ */
+public class ModalidadeEconomica {
+
+}
