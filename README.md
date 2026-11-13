@@ -1,2 +1,2 @@
 
-# psoft-bootstrap
+# Repositório base das atividades da disciplina
