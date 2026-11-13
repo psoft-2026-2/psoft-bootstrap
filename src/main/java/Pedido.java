@@ -1,47 +1,106 @@
+import java.util.Date;
+import java.util.Objects;
+
 public class Pedido {
-    private Integer id;
-    private String descricao;
-    private ModalidadeEntrega modalidadeEntrega;
-    private boolean status;
 
-    public Pedido(int id, String descricao) {
-        this.id = id;
-        this.descricao = descricao;
-        this.status = false;
+    private String cpfCliente;
+    private Endereco enderecoOrigem;
+    private Endereco enderecoDestino;
+    private String destinatario;
+    private double peso;
+    private double distanciaEstimada;
+    private Entrega entrega;
+
+    public Pedido(String cpfCliente, Endereco enderecoOrigem,
+                  Endereco enderecoDestino, String destinatario,
+                  double peso, double distanciaEstimada, Entrega entrega) {
+
+        this.cpfCliente = Objects.requireNonNull(cpfCliente);
+        this.enderecoOrigem = Objects.requireNonNull(enderecoOrigem);
+        this.enderecoDestino = Objects.requireNonNull(enderecoDestino);
+        this.destinatario = Objects.requireNonNull(destinatario);
+        this.entrega = Objects.requireNonNull(entrega);
+
+        if (peso <= 0 || distanciaEstimada <= 0) {
+            throw new IllegalArgumentException(
+                "Peso e distância devem ser positivos."
+            );
+        }
+
+        this.peso = peso;
+        this.distanciaEstimada = distanciaEstimada;
     }
 
-    public void setModalidadeConvencional(float tarifa, float distancia){
-        this.modalidadeEntrega = new ModalidadeConvencional(tarifa, distancia);
+    public double calcularCustoEntrega() {
+        return entrega.calculaCusto();
     }
 
-    public void setModalidadeExpressa(float distancia){
-        this.modalidadeEntrega = new ModalidadeExpressa(distancia);
+    public Date calcularPrazoEntrega() {
+        return entrega.calculaPrazo();
     }
 
-    public void setModalidadeEconomica(float distancia){
-        this.modalidadeEntrega = new ModalidadeEconomica(distancia);
+    public void alterarEntrega(Entrega novaEntrega) {
+        this.entrega = Objects.requireNonNull(novaEntrega);
     }
 
-    public float getCusto(){
-        if (modalidadeEntrega == null)  throw new IllegalStateException("Modalidade de entrega não definida.");
-        return modalidadeEntrega.custo();
+    public String getCpfCliente() {
+        return cpfCliente;
     }
 
-    public String getPrazo(){
-        if (modalidadeEntrega == null)  throw new IllegalStateException("Modalidade de entrega não definida.");
-        return modalidadeEntrega.prazo();
+    public Endereco getEnderecoOrigem() {
+        return enderecoOrigem;
     }
 
-    public String getDescricao(){
-        return descricao;
+    public Endereco getEnderecoDestino() {
+        return enderecoDestino;
     }
 
-    public boolean getStatus(){
-        return status;
+    public String getDestinatario() {
+        return destinatario;
     }
 
-    public void despachar() {
-        if (modalidadeEntrega != null) status = true;
-        else throw new IllegalStateException("Modalidade de entrega não definida.");
+    public double getPeso() {
+        return peso;
+    }
+
+    public double getDistanciaEstimada() {
+        return distanciaEstimada;
+    }
+
+    public Entrega getEntrega() {
+        return entrega;
+    }
+
+    public void setCpfCliente(String cpfCliente) {
+        this.cpfCliente = Objects.requireNonNull(cpfCliente);
+    }
+
+    public void setEnderecoOrigem(Endereco enderecoOrigem) {
+        this.enderecoOrigem = Objects.requireNonNull(enderecoOrigem);
+    }
+
+    public void setEnderecoDestino(Endereco enderecoDestino) {
+        this.enderecoDestino = Objects.requireNonNull(enderecoDestino);
+    }
+
+    public void setDestinatario(String destinatario) {
+        this.destinatario = Objects.requireNonNull(destinatario);
+    }
+
+    public void setPeso(double peso) {
+        if (peso <= 0) {
+            throw new IllegalArgumentException("O peso deve ser positivo.");
+        }
+        this.peso = peso;
+    }
+
+    public void setDistanciaEstimada(double distanciaEstimada) {
+        if (distanciaEstimada <= 0) {
+            throw new IllegalArgumentException(
+                "A distância deve ser positiva."
+            );
+        }
+        this.distanciaEstimada = distanciaEstimada;
     }
 }
+
