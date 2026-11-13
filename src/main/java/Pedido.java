@@ -1,47 +1,58 @@
 public class Pedido {
-    private Integer id;
-    private String descricao;
-    private ModalidadeEntrega modalidadeEntrega;
-    private boolean status;
 
-    public Pedido(int id, String descricao) {
-        this.id = id;
-        this.descricao = descricao;
-        this.status = false;
+    private Cliente cliente;
+    private EntregaI entrega;
+    private String origem;
+    private String destino;
+    private float peso;
+    private float distancia;
+    private boolean despachado;
+
+    public Pedido(Cliente cliente, String origem, String destino, float peso, float distancia) {
+        this.cliente = cliente;
+        this.origem = origem;
+        this.destino = destino;
+        this.peso = peso;
+        this.distancia = distancia;
+        this.despachado = false;
     }
 
-    public void setModalidadeConvencional(float tarifa, float distancia){
-        this.modalidadeEntrega = new ModalidadeConvencional(tarifa, distancia);
-    }
-
-    public void setModalidadeExpressa(float distancia){
-        this.modalidadeEntrega = new ModalidadeExpressa(distancia);
-    }
-
-    public void setModalidadeEconomica(float distancia){
-        this.modalidadeEntrega = new ModalidadeEconomica(distancia);
-    }
-
-    public float getCusto(){
-        if (modalidadeEntrega == null)  throw new IllegalStateException("Modalidade de entrega não definida.");
-        return modalidadeEntrega.custo();
-    }
-
-    public String getPrazo(){
-        if (modalidadeEntrega == null)  throw new IllegalStateException("Modalidade de entrega não definida.");
-        return modalidadeEntrega.prazo();
-    }
-
-    public String getDescricao(){
-        return descricao;
-    }
-
-    public boolean getStatus(){
-        return status;
+    public void setModalidadeEntrega(EntregaI entrega) {
+        if (despachado) {
+            throw new IllegalStateException("Pedido ja foi despachado");
+        }
+        this.entrega = entrega;
     }
 
     public void despachar() {
-        if (modalidadeEntrega != null) status = true;
-        else throw new IllegalStateException("Modalidade de entrega não definida.");
+        this.despachado = true;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public EntregaI getEntrega() {
+        return entrega;
+    }
+
+    public String getOrigem() {
+        return origem;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public float getPeso() {
+        return peso;
+    }
+
+    public float getDistancia() {
+        return distancia;
+    }
+
+    public boolean isDespachado() {
+        return despachado;
     }
 }
